@@ -5,12 +5,12 @@ function App() {
   return (
     <div className="flex flex-col justify-items-center items-center gap-6">
       <h1 className="font-bold text-3xl mt-4">ATUALIZAÇÃO DE PREÇO</h1>
-      <label>
-        <input type="file" accept=".csv" />
+      <form action="/stats" encType="multipart/form-data" method="post">
+        <input type="file" accept=".csv" name="uploaded_file" />
         <button className="px-4 mx-6 border border-gray-500 rounded-sm bg-gray-200 hover:bg-gray-300">
           VALIDAR
         </button>
-      </label>
+      </form>
       <Table />
       <button className="px-4 border border-gray-500 rounded-sm bg-gray-200 hover:bg-gray-300">
         ATUALIZAR

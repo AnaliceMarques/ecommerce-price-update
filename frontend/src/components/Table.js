@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Table = () => {
+export const Table = ({ data }) => {
   return (
     <>
       <table className="table-fixed border-collapse border border-slate-400">
@@ -31,6 +31,27 @@ export const Table = () => {
               Mensagem de erro
             </td>
           </tr>
+          {data.map((product) => {
+            return (
+              <tr>
+                <td className="text-center px-1 border border-gray-500">
+                  {product.productCode}
+                </td>
+                <td className="text-start px-1 border border-gray-500 ">
+                  {product.name}
+                </td>
+                <td className="text-center px-1  border border-gray-500">
+                  {product.salesPrice}
+                </td>
+                <td className="text-center px-1  border border-gray-500">
+                  {product.newPrice}
+                </td>
+                <td className="text-start text-red-500 px-1 border border-gray-500">
+                  {product.validationErrors}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>

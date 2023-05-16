@@ -1,40 +1,55 @@
+import { useState } from "react";
 import "./App.css";
+import { Instruction } from "./components/Instruction";
 import { Table } from "./components/Table";
+import axios from "axios";
 
 function App() {
+  const [data, setData] = useState([]);
+
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const formData = new FormData();
+
+  formData.append("file", file);
+
+  const upload = async () => {
+    try {
+      const res = await axios.post("http://localhost:3003", formData);
+
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-items-center items-center gap-6">
       <h1 className="font-bold text-3xl mt-4">ATUALIZAÇÃO DE PREÇO</h1>
-      <form action="/stats" encType="multipart/form-data" method="post">
-        <input type="file" accept=".csv" name="uploaded_file" />
-        <button className="px-4 mx-6 border border-gray-500 rounded-sm bg-gray-200 hover:bg-gray-300">
+      <form onSubmit={upload}>
+        <input
+          type="file"
+          accept=".csv"
+          name="uploaded_file"
+          onChange={handleFileChange}
+          className="border border-gray-300 rounded-sm pr-8"
+        />
+        <button
+          type="submit"
+          className="px-4 mx-6 border border-gray-500 rounded-sm bg-gray-200 hover:bg-gray-300"
+        >
           VALIDAR
         </button>
       </form>
-      <Table />
+      <Table data={data} />
       <button className="px-4 border border-gray-500 rounded-sm bg-gray-200 hover:bg-gray-300">
         ATUALIZAR
       </button>
-
-      <div>
-        <p className="font-bold">Instruções:</p>
-        <ul className="list-decimal">
-          <li>
-            Insira um arquivo no formato .csv contendo o código do produto que
-            será atualizado o preço e o novo preço;
-          </li>
-          <li>
-            Clique em VALIDAR para verificar se as informações recebidas atendem
-            as regras do programa;
-          </li>
-          <li>
-            Verifique se na coluna OBSERVAÇÃO apareceu alguma mensagem de erro.
-            Caso exista, resolva os problemas informados e repita os passos
-            anteriores;
-          </li>
-          <li>Clique em ATUALIZAR para atualizar os preços.</li>
-        </ul>
-      </div>
+      <Instruction />
     </div>
   );
 }
